@@ -1,0 +1,105 @@
+// server.js
+const express = require('express');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const path = require('path');
+
+const app = express();
+const PORT = 3000;
+
+// ミドルウェア
+app.use(bodyParser.json());
+app.use(cors());
+app.use(express.static(path.join(__dirname, 'public'))); // public フォルダを静的配信
+
+// MongoDB Atlas に接続
+mongoose.connect(
+  'mongodb+srv://reviewUser:herogloleacff@cluster0.owuahmc.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
+  { dbName: 'reviewsApp' }
+)
+  .then(() => console.log('MongoDB Atlas connected'))
+  .catch(err => console.log(err));
+
+// スキーマ定義
+const reviewSchema = new mongoose.Schema({
+  occ: String,
+  belong: String,
+  age: String,
+  gender: String,
+  reason: [String],
+  organization: String,
+  period: String,
+  time: String,
+  country: String,
+  people: String,
+  genderRatio: String,
+  cost: String,
+  reason2: String,
+  ratings: {
+    interactive_children: String,
+    interactive_people: String,
+    education_language: String,
+    education_sports: String,
+    education_music: String,
+    welfare_medical: String,
+    welfare_elderly: String,
+    welfare_disabilities: String,
+    environment_forest: String,
+    environment_animal: String,
+    environment_sea: String,
+    environment_clean: String,
+    environment_agricluture: String,
+    poverty_food: String,
+    culture_history: String,
+    culture_experience: String,
+    culture_event: String,
+    culture_town: String,
+    infra_reconstruction: String,
+    infra_water: String,
+    infra_electricity: String,
+    infra_traffic: String,
+    infra_construction: String,
+    meal_local: String,
+    meal_japanese: String,
+    language_speak: String,
+    language_guide: String,
+    private: String,
+    official: String,
+    freedom: String,
+    support: String,
+  },
+  stay: [String],
+  appeal: String,
+  improve: String,
+  comment: String,
+  recommendation: String,
+  createdAt: { type: Date, default: Date.now }
+});
+
+const Review = mongoose.model('Review', reviewSchema);
+
+// GET 口コミ一覧
+app.get('/reviews', async (req, res) => {
+  try {
+    const reviews = await Review.find().sort({ createdAt: -1 });
+    res.json(reviews);
+  } catch (err) {
+    res.status(500).json({ message: 'Error retrieving reviews', error: err.message });
+  }
+});
+
+// POST 口コミ追加
+app.post('/reviews', async (req, res) => {
+  try {
+    const newReview = new Review(req.body);
+    await newReview.save();
+    res.status(201).json({ message: 'Review saved successfully' });
+  } catch (err) {
+    console.error('Validation Error:', err);
+    res.status(400).json({ message: 'Invalid data submitted', error: err.message });
+  }
+});
+
+// サーバー起動
+app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>口コミ一覧</title>
+</head>
+<body>
+  <h1>口コミ一覧</h1>
+  <div id="reviewsList"></div>
+
+  <script>
+    const reviewsList = document.getElementById('reviewsList');
+
+    async function loadReviews() {
+      const res = await fetch('/reviews');
+      const reviews = await res.json();
+      
+      reviewsList.innerHTML = reviews.map(r => {
+        const ratingsHtml = Object.entries(r.ratings || {}).map(([key, value]) => {
+          const japaneseKey = {
+            interactive_children: '子どもとの交流',
+            interactive_people: '現地の人との交流',
+            education_language: '言語支援',
+            education_sports: 'スポーツ支援',
+            education_music: '音楽支援',
+            welfare_medical: '医療サポート',
+            welfare_elderly: '高齢者サポート',
+            welfare_disabilities: '障がい者サポート',
+            environment_forest: '植林活動、森林保護',
+            environment_animal: '動物保護',
+            environment_sea: '海洋保護',
+            environment_clean: '清掃',
+            environment_agricluture: '農業',
+            poverty_food: '食事配膳',
+            culture_history: '歴史地訪問',
+            culture_experience: '文化体験',
+            culture_event: 'イベント参加',
+            culture_town: '町おこし',
+            infra_reconstruction: '復興',
+            infra_water: '井戸堀り、水道整備',
+            infra_electricity: '電気整備',
+            infra_traffic: '交通整備',
+            infra_construction: '建設',
+            meal_local: '食事（現地らしさ）',
+            meal_japanese: '食事（日本人の口に合うか）',
+            language_speak: '現地語を話す必要',
+            language_guide: '日本語ガイドの有無',
+            private: '個人的な関わり',
+            official: '団体としての関わり',
+            freedom: '自由度',
+            support: '航空券や入国などの援助'
+          }[key] || key;
+          return `<li><b>${japaneseKey}</b>: ${value}</li>`;
+        }).join('');
+        
+        const stayHtml = (r.stay || []).map(s => {
+          const japaneseStay = {
+            hotel: 'ホテル',
+            dormitory: '団体専用寮',
+            homestay: 'ホームステイ'
+          }[s] || s;
+          return `<li>${japaneseStay}</li>`;
+        }).join('');
+
+        const reasonHtml = (r.reason || []).map(re => {
+          const japaneseReason = {
+            school: '学校の授業関連',
+            overseas: '海外に行ってみたかった',
+            challenging: '何かに挑戦してみたかった',
+            children: '子供が好きだった',
+            volunteer: 'ボランティアに興味があった',
+            international: '国際問題に興味があった',
+            poor: '貧困問題に興味があった',
+            friend: '友達の紹介'
+          }[re] || re;
+          return `<li>${japaneseReason}</li>`;
+        }).join('');
+
+        return `<p>
+          <hr>
+          <b>参加者情報</b>
+          <ul>
+            <li>職業: ${r.occ || '未記入'}</li>
+            <li>年齢: ${r.age || '未記入'}</li>
+            <li>性別: ${r.gender || '未記入'}</li>
+            <li>参加理由: <ul>${reasonHtml}</ul></li>
+          </ul>
+          <b>団体情報</b>
+          <ul>
+            <li>参加団体: ${r.organization || '未記入'}</li>
+            <li>参加回: ${r.period || '未記入'}</li>
+            <li>参加時期: ${r.time || '未記入'}</li>
+            <li>参加国: ${r.country || '未記入'}</li>
+            <li>参加者数: ${r.people || '未記入'}</li>
+            <li>男女比: ${r.genderRatio || '未記入'}</li>
+            <li>参加費: ${r.cost || '未記入'}</li>
+            <li>この団体を選んだ理由: ${r.reason2 || '未記入'}</li>
+            <li>宿泊施設: <ul>${stayHtml}</ul></li>
+          </ul>
+          <b>評価</b>
+          <ul>
+            ${ratingsHtml}
+          </ul>
+          <b>その他</b>
+          <ul>
+            <li>おすすめポイント: ${r.appeal || '未記入'}</li>
+            <li>改善ポイント: ${r.improve || '未記入'}</li>
+            <li>感想: ${r.comment || '未記入'}</li>
+            <li>おすすめ度: ${r.recommendation || '未記入'} / 10</li>
+          </ul>
+        </p>`;
+      }).join('');
+    }
+
+    loadReviews();
+  </script>
+
+  <a href="write_review.html">口コミを書くページへ</a>
+</body>
+</html>
