@@ -86,7 +86,8 @@
             oneyear: '6カ月-1年',
             long: '1年以上'
         }[r.period] || r.period;
-
+        
+        const deleteButton = isAdmin ? `<button onclick="deleteReview('${r._id}')">削除</button>` : '';
         return `<p>
           <hr>
           <b>参加者情報</b>
