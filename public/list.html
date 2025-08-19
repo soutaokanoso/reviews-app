@@ -10,8 +10,6 @@
 
   <script>
     const reviewsList = document.getElementById('reviewsList');
-    const urlParams = new URLSearchParams(window.location.search);
-    const isAdmin = urlParams.get('admin') === 'true';
 
     async function loadReviews() {
       const res = await fetch('/reviews');
@@ -78,7 +76,16 @@
           return `<li>${japaneseReason}</li>`;
         }).join('');
 
-        const deleteButton = isAdmin ? `<button onclick="deleteReview('${r._id}')">削除</button>` : '';
+        // 参加期間の日本語訳を追加
+        const japanesePeriod = {
+            oneweek: '1週間以内',
+            twoweek: '1-2週間',
+            onemonth: '2週間-1カ月',
+            threemonth: '1-3カ月',
+            sixmonth: '3-6カ月',
+            oneyear: '6カ月-1年',
+            long: '1年以上'
+        }[r.period] || r.period;
 
         return `<p>
           <hr>
@@ -92,8 +99,9 @@
           <b>団体情報</b>
           <ul>
             <li>参加団体: ${r.organization || '未記入'}</li>
-            <li>参加回: ${r.period || '未記入'}</li>
-            <li>参加時期: ${r.time || '未記入'}</li>
+            <li>参加回: ${r.time || '未記入'}</li>
+            <li>参加時期: ${r.seoson || '未記入'}</li>
+            <li>参加期間: ${japanesePeriod || '未記入'}</li>
             <li>参加国: ${r.country || '未記入'}</li>
             <li>参加者数: ${r.people || '未記入'}</li>
             <li>男女比: ${r.genderRatio || '未記入'}</li>
@@ -112,28 +120,8 @@
             <li>感想: ${r.comment || '未記入'}</li>
             <li>おすすめ度: ${r.recommendation || '未記入'} / 10</li>
           </ul>
-          ${deleteButton}
         </p>`;
       }).join('');
-    }
-
-    async function deleteReview(id) {
-        if (!confirm('本当にこの口コミを削除しますか？')) {
-            return;
-        }
-
-        try {
-            const res = await fetch(`/reviews/${id}`, { method: 'DELETE' });
-            if (res.ok) {
-                alert('口コミを削除しました。');
-                loadReviews(); // 削除後、口コミを再読み込み
-            } else {
-                alert('削除に失敗しました。');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            alert('削除中にエラーが発生しました。');
-        }
     }
 
     loadReviews();
