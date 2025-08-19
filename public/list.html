@@ -10,6 +10,8 @@
 
   <script>
     const reviewsList = document.getElementById('reviewsList');
+    const urlParams = new URLSearchParams(window.location.search);
+    const isAdmin = urlParams.get('admin') === 'true';
 
     async function loadReviews() {
       const res = await fetch('/reviews');
@@ -76,6 +78,8 @@
           return `<li>${japaneseReason}</li>`;
         }).join('');
 
+        const deleteButton = isAdmin ? `<button onclick="deleteReview('${r._id}')">削除</button>` : '';
+
         return `<p>
           <hr>
           <b>参加者情報</b>
@@ -108,8 +112,28 @@
             <li>感想: ${r.comment || '未記入'}</li>
             <li>おすすめ度: ${r.recommendation || '未記入'} / 10</li>
           </ul>
+          ${deleteButton}
         </p>`;
       }).join('');
+    }
+
+    async function deleteReview(id) {
+        if (!confirm('本当にこの口コミを削除しますか？')) {
+            return;
+        }
+
+        try {
+            const res = await fetch(`/reviews/${id}`, { method: 'DELETE' });
+            if (res.ok) {
+                alert('口コミを削除しました。');
+                loadReviews(); // 削除後、口コミを再読み込み
+            } else {
+                alert('削除に失敗しました。');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('削除中にエラーが発生しました。');
+        }
     }
 
     loadReviews();
