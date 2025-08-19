@@ -78,7 +78,7 @@
           return `<li>${japaneseReason}</li>`;
         }).join('');
 
-                // 参加期間の日本語訳を追加
+        // 参加期間の日本語訳を追加
         const japanesePeriod = {
             oneweek: '1週間以内',
             twoweek: '1-2週間',
@@ -88,7 +88,7 @@
             oneyear: '6カ月-1年',
             long: '1年以上'
         }[r.period] || r.period;
-
+        
         const deleteButton = isAdmin ? `<button onclick="deleteReview('${r._id}')">削除</button>` : '';
 
         return `<p>
@@ -103,8 +103,9 @@
           <b>団体情報</b>
           <ul>
             <li>参加団体: ${r.organization || '未記入'}</li>
-            <li>参加回: ${r.period || '未記入'}</li>
-            <li>参加時期: ${r.time || '未記入'}</li>
+            <li>参加回: ${r.time || '未記入'}</li>
+            <li>参加時期: ${r.seoson || '未記入'}</li>
+            <li>参加期間: ${japanesePeriod || '未記入'}</li>
             <li>参加国: ${r.country || '未記入'}</li>
             <li>参加者数: ${r.people || '未記入'}</li>
             <li>男女比: ${r.genderRatio || '未記入'}</li>
