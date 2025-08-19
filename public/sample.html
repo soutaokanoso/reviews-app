@@ -1,21 +1,91 @@
 <!DOCTYPE html>
-<html lang = "ja">
+<html lang="ja">
 <head>
-    <meta charset = "UTF=8">
-    <title>
-        海外ボランティア口コミサイト</title>
-<body>
-    <h1><p>海外ボランティアの口コミサイトです。</p></h1>
-    <p>自分に合った団体を見つけて海外ボランティアへ挑戦しよう！</p>
-    <a href = "write_review.html">
-        <button>口コミを記入する</button>
-    </a>
-    <a href = "search_organization.html">
-        <button>団体を探す</button>
-    </a>
-    <a href = "matching.html">
-        <button>マッチング機能</button>
-    </a>
-</body>
+    <meta charset="UTF-8">
+    <title>海外ボランティア口コミサイト</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #e6f7ff; /* 背景色を薄い水色に */
+            color: #333;
+            margin: 0;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #004080; /* メインタイトルを濃い青に */
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1); /* タイトルに影をつける */
+        }
+
+        h2 {
+            color: #005a9c; /* サブタイトルを少し明るい青に */
+            font-size: 1.8em;
+            margin-top: 30px;
+        }
+        
+        p {
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        button {
+            background-color: #0077cc;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px; /* ボタンを丸くする */
+            cursor: pointer;
+            font-size: 1.2em;
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin: 15px 10px;
+            transition: transform 0.2s, box-shadow 0.2s; /* ホバー時のアニメーション */
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* ボタンに影を追加 */
+        }
+        
+        button:hover {
+            transform: translateY(-3px); /* 少し上に移動するアニメーション */
+            box-shadow: 0 6px 10px rgba(0,0,0,0.15);
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+
+        a {
+            text-decoration: none; /* リンクの下線を消す */
+        }
+    </style>
 </head>
+<body>
+      <header style="text-align:center; padding:20px; background-color:#f2f2f2;">
+    <h1>VolunShare</h1>
+    <h2><p>海外ボランティア体験をシェアしよう🌍</p></h2>
+  </header>
+    <div class="container">
+        <h2>海外ボランティアの体験談を投稿して、みんなに魅力を伝えてみませんか？</h2>
+        <a href="write_review.html">
+            <button>口コミを記入する</button>
+        </a>
+        
+        <h2>参加者の体験談を見てみよう！</h2>
+        <a href="list.html">
+            <button>団体を探す</button>
+        </a>
+        
+        <h2>自分に合った団体を見つけて海外ボランティアへ挑戦しよう！</h2>
+        <a href="matching.html">
+            <button>マッチング機能</button>
+        </a>
+    </div>
+</body>
 </html>
