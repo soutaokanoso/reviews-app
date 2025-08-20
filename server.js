@@ -11,6 +11,15 @@ const PORT = 3000;
 // ミドルウェア
 app.use(bodyParser.json());
 app.use(cors());
+// server.js
+const express = require('express');
+const path = require('path');
+// ...（他のミドルウェア設定）
+
+// robots.txtを配信するルート
+app.get('/robots.txt', (req, res) => {
+  res.sendFile(path.join(__dirname, 'robots.txt'));
+});
 app.use(express.static(path.join(__dirname, 'public'))); // public フォルダを静的配信
 
 // MongoDB Atlas に接続
