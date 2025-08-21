@@ -1,0 +1,3 @@
+'User-agent: *'  
+'Disallow:'  
+'Sitemap: https://reviews-app-a56v.onrender.com/sitemap.xml'  

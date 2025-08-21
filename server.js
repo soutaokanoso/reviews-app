@@ -7,17 +7,9 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// robots.txtを動的に生成して配信するエンドポイント
-app.get('/robots.txt', (req, res) => {
-  res.type('text/plain');
-  res.send('User-agent: *\nDisallow:\nSitemap: https://reviews-app-a56v.onrender.com/sitemap.xml');
-});
-
 // ミドルウェア
 app.use(bodyParser.json());
 app.use(cors());
-
-// 'public'ディレクトリを静的配信
 app.use(express.static(path.join(__dirname, 'public')));
 
 // MongoDB Atlas に接続

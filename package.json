@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "echo 'User-agent: *' > public/robots.txt && echo 'Disallow:' >> public/robots.txt && echo 'Sitemap: https://reviews-app-a56v.onrender.com/sitemap.xml' >> public/robots.txt && node server.js"
   },
   "repository": {
     "type": "git",
