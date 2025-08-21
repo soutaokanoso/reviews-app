@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
@@ -40,7 +41,7 @@
             culture_event: 'イベント参加',
             culture_town: '町おこし',
             infra_reconstruction: '復興',
-            infra_water: '井戸堀り、水道整備',
+            infra_water: '井戸掘り、水道整備',
             infra_electricity: '電気整備',
             infra_traffic: '交通整備',
             infra_construction: '建設',
@@ -53,7 +54,8 @@
             freedom: '自由度',
             support: '航空券や入国などの援助'
           }[key] || key;
-          return `<li><b>${japaneseKey}</b>: ${value}</li>`;
+          // 未回答の項目は表示しないように修正
+          return value !== '未回答' ? `<li><b>${japaneseKey}</b>: ${value} / 5</li>` : '';
         }).join('');
         
         const stayHtml = (r.stay || []).map(s => {
@@ -89,6 +91,13 @@
             oneyear: '6カ月-1年',
             long: '1年以上'
         }[r.period] || r.period;
+
+        // 参加者国籍の日本語訳を追加
+        const japaneseNationality = {
+            japanese_only: '日本人のみ',
+            japanese_local: '日本人と現地人',
+            multinational: '多国籍'
+        }[r.nationality] || r.nationality;
         
         const deleteButton = isAdmin ? `<button onclick="deleteReview('${r._id}')">削除</button>` : '';
 
@@ -97,6 +106,7 @@
           <b>参加者情報</b>
           <ul>
             <li>職業: ${r.occ || '未記入'}</li>
+            <li>所属: ${r.belong || '未記入'}</li>
             <li>年齢: ${r.age || '未記入'}</li>
             <li>性別: ${r.gender || '未記入'}</li>
             <li>参加理由: <ul>${reasonHtml}</ul></li>
@@ -110,6 +120,7 @@
             <li>参加国: ${r.country || '未記入'}</li>
             <li>参加者数: ${r.people || '未記入'}</li>
             <li>男女比: ${r.genderRatio || '未記入'}</li>
+            <li>参加者国籍: ${japaneseNationality || '未記入'}</li>
             <li>参加費: ${r.cost || '未記入'}</li>
             <li>この団体を選んだ理由: ${r.reason2 || '未記入'}</li>
             <li>宿泊施設: <ul>${stayHtml}</ul></li>

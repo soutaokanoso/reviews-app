@@ -34,6 +34,7 @@ const reviewSchema = new mongoose.Schema({
   country: String,
   people: String,
   genderRatio: String,
+  nationality: String, // 新しいフィールドを追加
   cost: String,
   reason2: String,
   ratings: {
