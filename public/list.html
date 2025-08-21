@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
@@ -15,49 +14,82 @@
     const urlParams = new URLSearchParams(window.location.search);
     const isAdmin = urlParams.get('admin') === 'true';
 
+    // 評価項目の日本語訳を定義
+    const ratingsMap = {
+      // 交流
+      interactive_children: '子どもとの交流',
+      interactive_people: '現地の人との交流',
+      // 教育
+      education_language: '言語支援',
+      education_sports: 'スポーツ支援',
+      education_music: '音楽支援',
+      // 医療・福祉
+      welfare_medical: '医療サポート',
+      welfare_elderly: '高齢者サポート',
+      welfare_disabilities: '障がい者サポート',
+      // 環境
+      environment_forest: '植林活動、森林保護',
+      environment_animal: '動物保護',
+      environment_sea: '海洋保護',
+      environment_clean: '清掃',
+      environment_agricluture: '農業',
+      // 貧困
+      poverty_food: '食事配膳',
+      // 文化
+      culture_history: '歴史地訪問',
+      culture_experience: '文化体験',
+      culture_event: 'イベント参加',
+      culture_town: '町おこし',
+      // 災害・インフラ
+      infra_reconstruction: '復興',
+      infra_water: '井戸堀り、水道整備',
+      infra_electricity: '電気整備',
+      infra_traffic: '交通整備',
+      infra_construction: '建設',
+      // 食事
+      meal_local: '食事（現地らしさ）',
+      meal_japanese: '食事（日本人の口に合うか）',
+      // 言語力
+      language_speak: '現地語を話す必要',
+      language_guide: '日本語ガイドの有無',
+      // その他
+      private: '個人的な関わり',
+      official: '団体としての関わり',
+      freedom: '自由度',
+      support: '航空券や入国などの援助'
+    };
+
+    // 評価をグループごとに取得するヘルパー関数
+    function getRatingsByGroup(review, groupKeys) {
+      return groupKeys.map(key => {
+        const value = review.ratings[key];
+        return value && value !== '未回答' ? `<li><b>${ratingsMap[key]}</b>: ${value} / 5</li>` : '';
+      }).join('');
+    }
+
     async function loadReviews() {
       const res = await fetch('/reviews');
       const reviews = await res.json();
       
       reviewsList.innerHTML = reviews.map(r => {
-        const ratingsHtml = Object.entries(r.ratings || {}).map(([key, value]) => {
-          const japaneseKey = {
-            interactive_children: '子どもとの交流',
-            interactive_people: '現地の人との交流',
-            education_language: '言語支援',
-            education_sports: 'スポーツ支援',
-            education_music: '音楽支援',
-            welfare_medical: '医療サポート',
-            welfare_elderly: '高齢者サポート',
-            welfare_disabilities: '障がい者サポート',
-            environment_forest: '植林活動、森林保護',
-            environment_animal: '動物保護',
-            environment_sea: '海洋保護',
-            environment_clean: '清掃',
-            environment_agricluture: '農業',
-            poverty_food: '食事配膳',
-            culture_history: '歴史地訪問',
-            culture_experience: '文化体験',
-            culture_event: 'イベント参加',
-            culture_town: '町おこし',
-            infra_reconstruction: '復興',
-            infra_water: '井戸掘り、水道整備',
-            infra_electricity: '電気整備',
-            infra_traffic: '交通整備',
-            infra_construction: '建設',
-            meal_local: '食事（現地らしさ）',
-            meal_japanese: '食事（日本人の口に合うか）',
-            language_speak: '現地語を話す必要',
-            language_guide: '日本語ガイドの有無',
-            private: '個人的な関わり',
-            official: '団体としての関わり',
-            freedom: '自由度',
-            support: '航空券や入国などの援助'
-          }[key] || key;
-          // 未回答の項目は表示しないように修正
-          return value !== '未回答' ? `<li><b>${japaneseKey}</b>: ${value} / 5</li>` : '';
-        }).join('');
+        // 各評価グループの項目を定義
+        const activityKeys = [
+          'interactive_children', 'interactive_people', 'education_language', 'education_sports', 'education_music', 
+          'welfare_medical', 'welfare_elderly', 'welfare_disabilities', 'environment_forest', 'environment_animal', 
+          'environment_sea', 'environment_clean', 'environment_agricluture', 'poverty_food', 'culture_history', 
+          'culture_experience', 'culture_event', 'culture_town', 'infra_reconstruction', 'infra_water', 
+          'infra_electricity', 'infra_traffic', 'infra_construction'
+        ];
+        const mealKeys = ['meal_local', 'meal_japanese'];
+        const languageKeys = ['language_speak', 'language_guide'];
+        const otherKeys = ['private', 'official', 'freedom', 'support'];
         
+        // 各セクションのHTMLを生成
+        const activityHtml = getRatingsByGroup(r, activityKeys);
+        const mealHtml = getRatingsByGroup(r, mealKeys);
+        const languageHtml = getRatingsByGroup(r, languageKeys);
+        const otherRatingsHtml = getRatingsByGroup(r, otherKeys);
+
         const stayHtml = (r.stay || []).map(s => {
           const japaneseStay = {
             hotel: 'ホテル',
@@ -81,7 +113,6 @@
           return `<li>${japaneseReason}</li>`;
         }).join('');
 
-        // 参加期間の日本語訳を追加
         const japanesePeriod = {
             oneweek: '1週間以内',
             twoweek: '1-2週間',
@@ -92,7 +123,6 @@
             long: '1年以上'
         }[r.period] || r.period;
 
-        // 参加者国籍の日本語訳を追加
         const japaneseNationality = {
             japanese_only: '日本人のみ',
             japanese_local: '日本人と現地人',
@@ -125,11 +155,19 @@
             <li>この団体を選んだ理由: ${r.reason2 || '未記入'}</li>
             <li>宿泊施設: <ul>${stayHtml}</ul></li>
           </ul>
-          <b>評価</b>
-          <ul>
-            ${ratingsHtml}
-          </ul>
+          <b>活動内容</b>
+          <ul>${activityHtml}</ul>
+          <b>食事</b>
+          <ul>${mealHtml}</ul>
+          <b>宿泊施設</b>
+          <ul>${stayHtml}</ul>
+          <b>言語力</b>
+          <ul>${languageHtml}</ul>
           <b>その他</b>
+          <ul>${otherRatingsHtml}</ul>
+          
+          <br>
+          <b>感想</b>
           <ul>
             <li>おすすめポイント: ${r.appeal || '未記入'}</li>
             <li>改善ポイント: ${r.improve || '未記入'}</li>
@@ -150,7 +188,7 @@
             const res = await fetch(`/reviews/${id}`, { method: 'DELETE' });
             if (res.ok) {
                 alert('口コミを削除しました。');
-                loadReviews(); // 削除後、口コミを再読み込み
+                loadReviews();
             } else {
                 alert('削除に失敗しました。');
             }
