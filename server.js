@@ -7,16 +7,11 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// robots.txtをルートディレクトリから配信します
-app.get('/robots.txt', (req, res) => {
-    res.sendFile(path.join(__dirname, 'robots.txt'));
-});
-
 // ミドルウェア
 app.use(bodyParser.json());
 app.use(cors());
 
-// 'public'ディレクトリから静的ファイルを配信します
+// 'public'ディレクトリを静的配信
 app.use(express.static(path.join(__dirname, 'public')));
 
 // MongoDB Atlas に接続
