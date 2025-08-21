@@ -1,4 +1,3 @@
-// server.js
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -6,17 +5,24 @@ const cors = require('cors');
 const path = require('path');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
+
+// robots.txtを動的に生成して配信するエンドポイント
+app.get('/robots.txt', (req, res) => {
+  res.type('text/plain');
+  res.send('User-agent: *\nDisallow:\nSitemap: https://reviews-app-a56v.onrender.com/sitemap.xml');
+});
 
 // ミドルウェア
 app.use(bodyParser.json());
 app.use(cors());
-app.use(express.static(path.join(__dirname, 'public'))); // public フォルダを静的配信
+
+// 'public'ディレクトリを静的配信
+app.use(express.static(path.join(__dirname, 'public')));
 
 // MongoDB Atlas に接続
 mongoose.connect(
-  'mongodb+srv://reviewUser:herogloleacff@cluster0.owuahmc.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
-  { dbName: 'reviewsApp' }
+  'mongodb+srv://reviewUser:herogloleacff@cluster0.owuahmc.mongodb.net/reviewsApp?retryWrites=true&w=majority&appName=Cluster0'
 )
   .then(() => console.log('MongoDB Atlas connected'))
   .catch(err => console.log(err));
@@ -34,7 +40,7 @@ const reviewSchema = new mongoose.Schema({
   country: String,
   people: String,
   genderRatio: String,
-  nationality: String, // 新しいフィールドを追加
+  nationality: String,
   cost: String,
   reason2: String,
   ratings: {
