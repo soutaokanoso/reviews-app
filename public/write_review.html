@@ -20,6 +20,35 @@
         color: #0077cc;
         padding: 0 10px;
     }
+    #organizationInput {
+        width: 70%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        font-size: 16px;
+    }
+    #organizationSuggestions {
+        border: 1px solid #ccc;
+        border-top: none;
+        max-height: 150px;
+        overflow-y: auto;
+        position: absolute;
+        width: 70%;
+        z-index: 99;
+        background-color: white;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    }
+    #organizationSuggestions div {
+        padding: 10px;
+        cursor: pointer;
+        text-align: left;
+    }
+    #organizationSuggestions div:hover {
+        background-color: #f1f1f1;
+    }
     </style>
     <meta name="google-site-verification" content="I-6pXdZ-8O-kBGU7J5imtft81pLgAJFzc2GvGoYzVC0" />
 </head>
@@ -60,7 +89,11 @@
     </fieldset>
     <fieldset>
         <legend><h2><p>団体情報</p></h2></legend>
-        <h4><p><label>参加団体:<input type="text" name="organization">(例:NPO法人○○)</label></p>
+        <h4><p>
+            <label>参加団体:</label>
+            <input type="text" id="organizationInput" name="organization" placeholder="例: NPO法人ジャパンハート" required>
+            <div id="organizationSuggestions" style="position:absolute; z-index:99; background-color:white; border:1px solid #ccc; max-height:150px; overflow-y:auto; display:none;"></div>
+        </p></h4>
         <h4><p><label>参加回:<input type="text" name="time">(例:第○回子ども支援ボランティア)</label></p>
         <h4><p><label>参加時期:<input type="text" name="seoson">(例:○○年○月)</label></p>
         <p>参加期間:</p>
@@ -353,6 +386,56 @@ occSelect.addEventListener('change', function(){
     }
 });
 
+const organizationInput = document.getElementById('organizationInput');
+const organizationSuggestions = document.getElementById('organizationSuggestions');
+let allOrganizations = [];
+
+// ページ読み込み時にすべての団体名を取得
+async function fetchAllOrganizations() {
+    try {
+        const response = await fetch('/organizations');
+        allOrganizations = await response.json();
+    } catch (error) {
+        console.error('Error fetching organizations:', error);
+    }
+}
+
+// 入力時にサジェストを表示
+organizationInput.addEventListener('input', () => {
+    const query = organizationInput.value.toLowerCase();
+    organizationSuggestions.innerHTML = '';
+    if (query.length === 0) {
+        organizationSuggestions.style.display = 'none';
+        return;
+    }
+
+    const filtered = allOrganizations.filter(org => org.toLowerCase().includes(query));
+    
+    if (filtered.length > 0) {
+        filtered.forEach(org => {
+            const div = document.createElement('div');
+            div.textContent = org;
+            div.style.padding = '8px';
+            div.style.cursor = 'pointer';
+            div.addEventListener('click', () => {
+                organizationInput.value = org;
+                organizationSuggestions.style.display = 'none';
+            });
+            organizationSuggestions.appendChild(div);
+        });
+        organizationSuggestions.style.display = 'block';
+    } else {
+        organizationSuggestions.style.display = 'none';
+    }
+});
+
+// フォーム外をクリックしたらサジェストを非表示に
+document.addEventListener('click', (e) => {
+    if (!organizationInput.contains(e.target) && !organizationSuggestions.contains(e.target)) {
+        organizationSuggestions.style.display = 'none';
+    }
+});
+
 const form = document.getElementById('reviewForm');
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -360,16 +443,13 @@ form.addEventListener('submit', async (e) => {
     const formData = new FormData(form);
     const data = {};
 
-    // フォームデータをJSONオブジェクトに変換
     for (const [key, value] of formData.entries()) {
         data[key] = value;
     }
 
-    // `reason`と`stay`を配列に変換（複数選択のため）
     data.reason = formData.getAll('reason');
     data.stay = formData.getAll('stay');
 
-    // `ratings`オブジェクトを構築
     data.ratings = {};
     const ratingKeys = ['interactive_children', 'interactive_people', 'education_language', 'education_sports', 'education_music', 'welfare_medical', 'welfare_elderly', 'welfare_disabilities', 'environment_forest', 'environment_animal', 'environment_sea', 'environment_clean', 'environment_agricluture', 'poverty_food', 'culture_history', 'culture_experience', 'culture_event', 'culture_town', 'infra_reconstruction', 'infra_water', 'infra_electricity', 'infra_traffic', 'infra_construction', 'meal_local', 'meal_japanese', 'language_speak', 'language_guide', 'private', 'official', 'freedom', 'support'];
     
@@ -377,13 +457,11 @@ form.addEventListener('submit', async (e) => {
         data.ratings[key] = formData.get(key) || '未回答';
     });
 
-    // 数値フィールドをNumber型に変換
     data.age = data.age ? parseInt(data.age) : null;
     data.people = data.people ? parseInt(data.people) : null;
     data.cost = data.cost ? parseInt(data.cost) : null;
     data.recommendation = data.recommendation ? parseInt(data.recommendation) : null;
     
-    // サーバーにデータを送信
     try {
         const response = await fetch('/reviews', {
             method: 'POST',
@@ -407,6 +485,8 @@ form.addEventListener('submit', async (e) => {
         alert('エラーが発生しました。ネットワーク接続を確認してください。');
     }
 });
+
+fetchAllOrganizations();
 </script>
 </body>    
 </html>
