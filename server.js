@@ -1,3 +1,4 @@
+// server.js
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -5,18 +6,17 @@ const cors = require('cors');
 const path = require('path');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = 3000;
 
 // ミドルウェア
 app.use(bodyParser.json());
 app.use(cors());
-
-// 'public'ディレクトリを静的配信
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public'))); // public フォルダを静的配信
 
 // MongoDB Atlas に接続
 mongoose.connect(
-  'mongodb+srv://reviewUser:herogloleacff@cluster0.owuahmc.mongodb.net/reviewsApp?retryWrites=true&w=majority&appName=Cluster0'
+  'mongodb+srv://reviewUser:herogloleacff@cluster0.owuahmc.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
+  { dbName: 'reviewsApp' }
 )
   .then(() => console.log('MongoDB Atlas connected'))
   .catch(err => console.log(err));
@@ -34,6 +34,7 @@ const reviewSchema = new mongoose.Schema({
   country: String,
   people: String,
   genderRatio: String,
+  nationality: String, // 新しいフィールドを追加
   cost: String,
   reason2: String,
   ratings: {
@@ -86,6 +87,32 @@ app.get('/reviews', async (req, res) => {
     res.json(reviews);
   } catch (err) {
     res.status(500).json({ message: 'Error retrieving reviews', error: err.message });
+  }
+});
+
+// GET すべての団体名を取得
+app.get('/organizations', async (req, res) => {
+  try {
+    const organizations = await Review.distinct('organization');
+    res.json(organizations);
+  } catch (err) {
+    res.status(500).json({ message: 'Error retrieving organizations', error: err.message });
+  }
+});
+
+// GET 団体名で検索
+app.get('/search', async (req, res) => {
+  const query = req.query.organization;
+  if (!query) {
+    return res.status(400).json({ message: 'Organization query is required' });
+  }
+
+  try {
+    // 正規表現を使ってあいまい検索
+    const reviews = await Review.find({ organization: { $regex: query, $options: 'i' } });
+    res.json(reviews);
+  } catch (err) {
+    res.status(500).json({ message: 'Error searching reviews', error: err.message });
   }
 });
 
