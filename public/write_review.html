@@ -1,8 +1,11 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF=8">
-    <title>口コミを記入</title>
+    <meta charset="UTF-8">
+    <title>海外ボランティア口コミの投稿｜VolunShare</title>
+    <meta name="description" content="海外ボランティアの体験談・口コミを投稿するページ。あなたの海外ボランティア経験をシェアしませんか？">
+    <meta name="keywords" content="海外ボランティア, 口コミ, 投稿, 体験談, ボランティアレビュー, 記入">
+    <meta name="robots" content="index, follow">
     <style>
     .hidden{display: none;}
     .center {
@@ -49,450 +52,482 @@
     #organizationSuggestions div:hover {
         background-color: #f1f1f1;
     }
+
+    /* 新規追加スタイル */
+    button {
+        background-color: #0077cc;
+        color: white;
+        padding: 15px 30px;
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+        font-size: 1.2em;
+        font-weight: bold;
+        letter-spacing: 1px;
+        margin: 15px 10px;
+        transition: transform 0.2s, box-shadow 0.2s;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    
+    button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 10px rgba(0,0,0,0.15);
+    }
+
+    a {
+        text-decoration: none;
+    }
+    
     </style>
     <meta name="google-site-verification" content="I-6pXdZ-8O-kBGU7J5imtft81pLgAJFzc2GvGoYzVC0" />
 </head>
 <body>
-<h1 class="center">口コミを記入</h1>
-<form class="center" id="reviewForm">
-    <fieldset>
-        <legend><h2><p>参加者情報</p></h2></legend>
-        <h4><p><label>参加時の職業:</label>
-            <select id="occSelect" name="occ">
-                <option value="highschool">高校生</option>
-                <option value="university">大学生</option>
-                <option value="graduate">大学院生</option>
-                <option value="working">社会人</option>     
-                <option value="others"> その他</option>  
-            </select>
-        </label></p>
-        <div id="univForm" class="hidden">
-        <h4><p><label>大学名・学部・学科:</label> <input type="text" name="belong">(例:○○大学・○○学部・○○学科)</p>
-        </div>
-        <div id="gradForm" class="hidden">
-        <h4><p><label>大学院名・研究科・専攻:</label> <input type="text" name="belong">(例:○○大学院・○○研究科・○○専攻)</p>
-        </div>
-        <h4><label>参加時の年齢:</label> <input type="number" name="age"></p>
-        <h4><p>性別:</p>
-        <label><input type="radio" name="gender" value="male"> 男性</label>
-        <label><input type="radio" name="gender" value="female"> 女性</label>
-        <label><input type="radio" name="gender" value="others"> その他</label></p>
-        <h4><p>海外ボランティアに参加した理由:</p>
-        <p><label><input type="checkbox" name="reason" value="school">学校の授業関連</label></p>
-        <p><label><input type="checkbox" name="reason" value="overseas">海外に行ってみたかった</label></p>
-        <p><label><input type="checkbox" name="reason" value="challenging">何かに挑戦してみたかった</label></p>
-        <p><label><input type="checkbox" name="reason" value="children">子供が好きだった</label></p>
-        <p><label><input type="checkbox" name="reason" value="volunteer">ボランティアに興味があった</label></p>
-        <p><label><input type="checkbox" name="reason" value="international">国際問題に興味があった</label></p>
-        <p><label><input type="checkbox" name="reason" value="poor">貧困問題に興味があった</label></p>
-        <p><label><input type="checkbox" name="reason" value="friend">友達の紹介</label></p>
-    </fieldset>
-    <fieldset>
-        <legend><h2><p>団体情報</p></h2></legend>
-        <h4><p>
-            <label>参加団体:</label>
-            <input type="text" id="organizationInput" name="organization" placeholder="例: NPO法人ジャパンハート" required>
-            <div id="organizationSuggestions" style="position:absolute; z-index:99; background-color:white; border:1px solid #ccc; max-height:150px; overflow-y:auto; display:none;"></div>
-        </p></h4>
-        <h4><p><label>参加回:<input type="text" name="time">(例:第○回子ども支援ボランティア)</label></p>
-        <h4><p><label>参加時期:<input type="text" name="seoson">(例:○○年○月)</label></p>
-        <p>参加期間:</p>
-        <p><label><input type="radio" name="period" value="oneweek">1週間以内</label>
-        <label><input type="radio" name="period" value="twoweek">1-2週間</label>
-        <label><input type="radio" name="period" value="onemonth">2週間-1カ月</label>
-        <label><input type="radio" name="period" value="threemonth">1-3カ月</label>
-        <label><input type="radio" name="period" value="sixmonth">3-6カ月</label>
-        <label><input type="radio" name="period" value="oneyear">6カ月-1年</label>
-        <label><input type="radio" name="period" value="long">1年以上</label>
-        </p>
-        <h4><p><label>参加国:<input type="text" name="country">(例:カンボジア)</label></p>
-        <h4><label>参加者数: <input type="number" name="people">(例:20)</label></p>
-        <h4><p><label>男女比:<input type="text" name="genderRatio">(例:2:1)</label></p>
+    <header style="text-align:center; padding:20px; background-color:#f2f2f2;">
+      <h1>VolunShare</h1>
+    </header>
+    <h1 class="center">口コミを記入</h1>
+    <form class="center" id="reviewForm">
+        <fieldset>
+            <legend><h2><p>参加者情報</p></h2></legend>
+            <h4><p><label>参加時の職業:</label>
+                <select id="occSelect" name="occ">
+                    <option value="highschool">高校生</option>
+                    <option value="university">大学生</option>
+                    <option value="graduate">大学院生</option>
+                    <option value="working">社会人</option>     
+                    <option value="others"> その他</option>  
+                </select>
+            </label></p>
+            <div id="univForm" class="hidden">
+            <h4><p><label>大学名・学部・学科:</label> <input type="text" name="belong">(例:○○大学・○○学部・○○学科)</p>
+            </div>
+            <div id="gradForm" class="hidden">
+            <h4><p><label>大学院名・研究科・専攻:</label> <input type="text" name="belong">(例:○○大学院・○○研究科・○○専攻)</p>
+            </div>
+            <h4><label>参加時の年齢:</label> <input type="number" name="age"></p>
+            <h4><p>性別:</p>
+            <label><input type="radio" name="gender" value="male"> 男性</label>
+            <label><input type="radio" name="gender" value="female"> 女性</label>
+            <label><input type="radio" name="gender" value="others"> その他</label></p>
+            <h4><p>海外ボランティアに参加した理由:</p>
+            <p><label><input type="checkbox" name="reason" value="school">学校の授業関連</label></p>
+            <p><label><input type="checkbox" name="reason" value="overseas">海外に行ってみたかった</label></p>
+            <p><label><input type="checkbox" name="reason" value="challenging">何かに挑戦してみたかった</label></p>
+            <p><label><input type="checkbox" name="reason" value="children">子供が好きだった</label></p>
+            <p><label><input type="checkbox" name="reason" value="volunteer">ボランティアに興味があった</label></p>
+            <p><label><input type="checkbox" name="reason" value="international">国際問題に興味があった</label></p>
+            <p><label><input type="checkbox" name="reason" value="poor">貧困問題に興味があった</label></p>
+            <p><label><input type="checkbox" name="reason" value="friend">友達の紹介</label></p>
+        </fieldset>
+        <fieldset>
+            <legend><h2><p>団体情報</p></h2></legend>
+            <h4><p>
+                <label>参加団体:</label>
+                <input type="text" id="organizationInput" name="organization" placeholder="例: NPO法人ジャパンハート" required>
+                <div id="organizationSuggestions" style="position:absolute; z-index:99; background-color:white; border:1px solid #ccc; max-height:150px; overflow-y:auto; display:none;"></div>
+            </p></h4>
+            <h4><p><label>参加回:<input type="text" name="time">(例:第○回子ども支援ボランティア)</label></p>
+            <h4><p><label>参加時期:<input type="text" name="seoson">(例:○○年○月)</label></p>
+            <p>参加期間:</p>
+            <p><label><input type="radio" name="period" value="oneweek">1週間以内</label>
+            <label><input type="radio" name="period" value="twoweek">1-2週間</label>
+            <label><input type="radio" name="period" value="onemonth">2週間-1カ月</label>
+            <label><input type="radio" name="period" value="threemonth">1-3カ月</label>
+            <label><input type="radio" name="period" value="sixmonth">3-6カ月</label>
+            <label><input type="radio" name="period" value="oneyear">6カ月-1年</label>
+            <label><input type="radio" name="period" value="long">1年以上</label>
+            </p>
+            <h4><p><label>参加国:<input type="text" name="country">(例:カンボジア)</label></p>
+            <h4><label>参加者数: <input type="number" name="people">(例:20)</label></p>
+            <h4><p><label>男女比:<input type="text" name="genderRatio">(例:2:1)</label></p>
+            
+            <h4><p>参加者国籍:</p>
+            <label><input type="radio" name="nationality" value="japanese_only">日本人のみ</label>
+            <label><input type="radio" name="nationality" value="japanese_local">日本人と現地人</label>
+            <label><input type="radio" name="nationality" value="multinational">多国籍</label>
+            </p></h4>
+            <h4><label>参加費: <input type="number" name="cost"></label>(例:100000)</p>
+            <h4><p><label>この団体を選んだ理由:</label>
+            <textarea name="reason2" rows="2" cols="50"></textarea>
+            </label></p>
+            
+            <h4><p>活動内容:</p></h4>
+            <p>＜交流＞</p>
+            <p>子どもとの交流:
+            <label><input type="radio" name="interactive_children" value="1">1</label>
+            <label><input type="radio" name="interactive_children" value="2">2</label>
+            <label><input type="radio" name="interactive_children" value="3">3</label>
+            <label><input type="radio" name="interactive_children" value="4">4</label>
+            <label><input type="radio" name="interactive_children" value="5">5</label>
+            </p>
+            <p>現地の人との交流:
+            <label><input type="radio" name="interactive_people" value="1">1</label>
+            <label><input type="radio" name="interactive_people" value="2">2</label>
+            <label><input type="radio" name="interactive_people" value="3">3</label>
+            <label><input type="radio" name="interactive_people" value="4">4</label>
+            <label><input type="radio" name="interactive_people" value="5">5</label>
+            </p>
+            <p>＜教育＞</p>
+            <p>言語支援:
+            <label><input type="radio" name="education_language" value="1">1</label>
+            <label><input type="radio" name="education_language" value="2">2</label>
+            <label><input type="radio" name="education_language" value="3">3</label>
+            <label><input type="radio" name="education_language" value="4">4</label>
+            <label><input type="radio" name="education_language" value="5">5</label>
+            </p>
+            <p>スポーツ支援:
+            <label><input type="radio" name="education_sports" value="1">1</label>
+            <label><input type="radio" name="education_sports" value="2">2</label>
+            <label><input type="radio" name="education_sports" value="3">3</label>
+            <label><input type="radio" name="education_sports" value="4">4</label>
+            <label><input type="radio" name="education_sports" value="5">5</label>
+            </p>
+            <p>音楽支援:
+            <label><input type="radio" name="education_music" value="1">1</label>
+            <label><input type="radio" name="education_music" value="2">2</label>
+            <label><input type="radio" name="education_music" value="3">3</label>
+            <label><input type="radio" name="education_music" value="4">4</label>
+            <label><input type="radio" name="education_music" value="5">5</label>
+            </p>
+            <p>＜医療・福祉＞</p>
+            <p>医療サポート:
+            <label><input type="radio" name="welfare_medical" value="1">1</label>
+            <label><input type="radio" name="welfare_medical" value="2">2</label>
+            <label><input type="radio" name="welfare_medical" value="3">3</label>
+            <label><input type="radio" name="welfare_medical" value="4">4</label>
+            <label><input type="radio" name="welfare_medical" value="5">5</label>
+            </p>
+            <p>高齢者サポート:
+            <label><input type="radio" name="welfare_elderly" value="1">1</label>
+            <label><input type="radio" name="welfare_elderly" value="2">2</label>
+            <label><input type="radio" name="welfare_elderly" value="3">3</label>
+            <label><input type="radio" name="welfare_elderly" value="4">4</label>
+            <label><input type="radio" name="welfare_elderly" value="5">5</label>
+            </p>
+            <p>障がい者サポート:
+            <label><input type="radio" name="welfare_disabilities" value="1">1</label>
+            <label><input type="radio" name="welfare_disabilities" value="2">2</label>
+            <label><input type="radio" name="welfare_disabilities" value="3">3</label>
+            <label><input type="radio" name="welfare_disabilities" value="4">4</label>
+            <label><input type="radio" name="welfare_disabilities" value="5">5</label>
+            </p>
+            <p>＜環境支援＞</p>
+            <p>植林活動、森林保護:
+            <label><input type="radio" name="environment_forest" value="1">1</label>
+            <label><input type="radio" name="environment_forest" value="2">2</label>
+            <label><input type="radio" name="environment_forest" value="3">3</label>
+            <label><input type="radio" name="environment_forest" value="4">4</label>
+            <label><input type="radio" name="environment_forest" value="5">5</label>
+            </p>
+            <p>動物保護:
+            <label><input type="radio" name="environment_animal" value="1">1</label>
+            <label><input type="radio" name="environment_animal" value="2">2</label>
+            <label><input type="radio" name="environment_animal" value="3">3</label>
+            <label><input type="radio" name="environment_animal" value="4">4</label>
+            <label><input type="radio" name="environment_animal" value="5">5</label>
+            </p>
+            <p>海洋保護:
+            <label><input type="radio" name="environment_sea" value="1">1</label>
+            <label><input type="radio" name="environment_sea" value="2">2</label>
+            <label><input type="radio" name="environment_sea" value="3">3</label>
+            <label><input type="radio" name="environment_sea" value="4">4</label>
+            <label><input type="radio" name="environment_sea" value="5">5</label>
+            </p>
+            <p>清掃:
+            <label><input type="radio" name="environment_clean" value="1">1</label>
+            <label><input type="radio" name="environment_clean" value="2">2</label>
+            <label><input type="radio" name="environment_clean" value="3">3</label>
+            <label><input type="radio" name="environment_clean" value="4">4</label>
+            <label><input type="radio" name="environment_clean" value="5">5</label>
+            </p>
+            <p>農業:
+            <label><input type="radio" name="environment_agricluture" value="1">1</label>
+            <label><input type="radio" name="environment_agricluture" value="2">2</label>
+            <label><input type="radio" name="environment_agricluture" value="3">3</label>
+            <label><input type="radio" name="environment_agricluture" value="4">4</label>
+            <label><input type="radio" name="environment_agricluture" value="5">5</label>
+            </p>
+            <p>＜貧困＞</p>
+            <p>食事配膳:
+            <label><input type="radio" name="poverty_food" value="1">1</label>
+            <label><input type="radio" name="poverty_food" value="2">2</label>
+            <label><input type="radio" name="poverty_food" value="3">3</label>
+            <label><input type="radio" name="poverty_food" value="4">4</label>
+            <label><input type="radio" name="poverty_food" value="5">5</label>
+            </p>
+            <p>＜文化＞</p>
+            <p>歴史地訪問:
+            <label><input type="radio" name="culture_history" value="1">1</label>
+            <label><input type="radio" name="culture_history" value="2">2</label>
+            <label><input type="radio" name="culture_history" value="3">3</label>
+            <label><input type="radio" name="culture_history" value="4">4</label>
+            <label><input type="radio" name="culture_history" value="5">5</label>
+            </p>
+            <p>文化体験:
+            <label><input type="radio" name="culture_experience" value="1">1</label>
+            <label><input type="radio" name="culture_experience" value="2">2</label>
+            <label><input type="radio" name="culture_experience" value="3">3</label>
+            <label><input type="radio" name="culture_experience" value="4">4</label>
+            <label><input type="radio" name="culture_experience" value="5">5</label> 
+            </p>
+            <p>イベント参加:
+            <label><input type="radio" name="culture_event" value="1">1</label>
+            <label><input type="radio" name="culture_event" value="2">2</label>
+            <label><input type="radio" name="culture_event" value="3">3</label>
+            <label><input type="radio" name="culture_event" value="4">4</label>
+            <label><input type="radio" name="culture_event" value="5">5</label> 
+            </p>
+            <p>町おこし:
+            <label><input type="radio" name="culture_town" value="1">1</label>
+            <label><input type="radio" name="culture_town" value="2">2</label>
+            <label><input type="radio" name="culture_town" value="3">3</label>
+            <label><input type="radio" name="culture_town" value="4">4</label>
+            <label><input type="radio" name="culture_town" value="5">5</label>
+            </p>
+            <p>＜災害・インフラ＞</p>
+            <p>復興:
+            <label><input type="radio" name="infra_reconstruction" value="1">1</label>
+            <label><input type="radio" name="infra_reconstruction" value="2">2</label>
+            <label><input type="radio" name="infra_reconstruction" value="3">3</label>
+            <label><input type="radio" name="infra_reconstruction" value="4">4</label>
+            <label><input type="radio" name="infra_reconstruction" value="5">5</label>
+            </p>
+            <p>井戸堀り、水道整備:
+            <label><input type="radio" name="infra_water" value="1">1</label>
+            <label><input type="radio" name="infra_water" value="2">2</label>
+            <label><input type="radio" name="infra_water" value="3">3</label>
+            <label><input type="radio" name="infra_water" value="4">4</label>
+            <label><input type="radio" name="infra_water" value="5">5</label>
+            </p>
+            <p>電気整備:
+            <label><input type="radio" name="infra_electricity" value="1">1</label>
+            <label><input type="radio" name="infra_electricity" value="2">2</label>
+            <label><input type="radio" name="infra_electricity" value="3">3</label>
+            <label><input type="radio" name="infra_electricity" value="4">4</label>
+            <label><input type="radio" name="infra_electricity" value="5">5</label>
+            </p>
+            <p>交通整備:
+            <label><input type="radio" name="infra_traffic" value="1">1</label>
+            <label><input type="radio" name="infra_traffic" value="2">2</label>
+            <label><input type="radio" name="infra_traffic" value="3">3</label>
+            <label><input type="radio" name="infra_traffic" value="4">4</label>
+            <label><input type="radio" name="infra_traffic" value="5">5</label>
+            </p>
+            <p>建設:
+            <label><input type="radio" name="infra_construction" value="1">1</label>
+            <label><input type="radio" name="infra_construction" value="2">2</label>
+            <label><input type="radio" name="infra_construction" value="3">3</label>
+            <label><input type="radio" name="infra_construction" value="4">4</label>
+            <label><input type="radio" name="infra_construction" value="5">5</label>
+            </p>
+            <h4><p>食事:</p></h4>
+            <p>現地らしさ:
+            <label><input type="radio" name="meal_local" value="1">1</label>
+            <label><input type="radio" name="meal_local" value="2">2</label>
+            <label><input type="radio" name="meal_local" value="3">3</label>
+            <label><input type="radio" name="meal_local" value="4">4</label>
+            <label><input type="radio" name="meal_local" value="5">5</label>
+            </p>
+            <p>日本人の口に合うか:
+            <label><input type="radio" name="meal_japanese" value="1">1</label>
+            <label><input type="radio" name="meal_japanese" value="2">2</label>
+            <label><input type="radio" name="meal_japanese" value="3">3</label>
+            <label><input type="radio" name="meal_japanese" value="4">4</label>
+            <label><input type="radio" name="meal_japanese" value="5">5</label>
+            </p>
+            <h4><p>宿泊施設:</p></h4>
+            <label><input type="checkbox" name="stay" value="hotel">ホテル</label>
+            <label><input type="checkbox" name="stay" value="dormitory">団体専用寮</label>
+            <label><input type="checkbox" name="stay" value="homestay">ホームステイ</label>
+            <h4><p>言語力</p></h4>
+            <p>現地語を話せる必要があるか:
+            <label><input type="radio" name="language_speak" value="1">1</label>
+            <label><input type="radio" name="language_speak" value="2">2</label>
+            <label><input type="radio" name="language_speak" value="3">3</label>
+            <label><input type="radio" name="language_speak" value="4">4</label>
+            <label><input type="radio" name="language_speak" value="5">5</label>
+            </p>
+            <p>日本語ガイドがいるか:
+            <label><input type="radio" name="language_guide" value="1">1</label>
+            <label><input type="radio" name="language_guide" value="2">2</label>
+            <label><input type="radio" name="language_guide" value="3">3</label>
+            <label><input type="radio" name="language_guide" value="4">4</label>
+            <label><input type="radio" name="language_guide" value="5">5</label>
+            </p>
+            <h4><p>その他</p></h4>
+            <p>参加後の個人的な関わり:
+            <label><input type="radio" name="private" value="1">1</label>
+            <label><input type="radio" name="private" value="2">2</label>
+            <label><input type="radio" name="private" value="3">3</label>
+            <label><input type="radio" name="private" value="4">4</label>
+            <label><input type="radio" name="private" value="5">5</label>
+            </p>
+            <p>参加後の団体としての関わり:
+            <label><input type="radio" name="official" value="1">1</label>
+            <label><input type="radio" name="official" value="2">2</label>
+            <label><input type="radio" name="official" value="3">3</label>
+            <label><input type="radio" name="official" value="4">4</label>
+            <label><input type="radio" name="official" value="5">5</label>
+            </p>
+            <p>自由度:
+            <label><input type="radio" name="freedom" value="1">1</label>
+            <label><input type="radio" name="freedom" value="2">2</label>
+            <label><input type="radio" name="freedom" value="3">3</label>
+            <label><input type="radio" name="freedom" value="4">4</label>
+            <label><input type="radio" name="freedom" value="5">5</label>
+            </p>
+            <p>航空券や入国などの援助:
+            <label><input type="radio" name="support" value="1">1</label>
+            <label><input type="radio" name="support" value="2">2</label>
+            <label><input type="radio" name="support" value="3">3</label>
+            <label><input type="radio" name="support" value="4">4</label>
+            <label><input type="radio" name="support" value="5">5</label>
+            </p>
+            <h4><p><label>おすすめポイント:</label>
+            <textarea name="appeal" rows="2" cols="50"></textarea>
+            </label></p></h4>
+            <h4><p><label>改善ポイント:</label>
+            <textarea name="improve" rows="2" cols="50"></textarea>
+            </label></p></h4>
+            <h4><p><label>感想:</label>
+            <textarea name="comment" rows="2" cols="50"></textarea>
+            </label></p></h4>
+            <h4><p>おすすめ度</p>
+            <label><input type="radio" name="recommendation" value="1">1</label>
+            <label><input type="radio" name="recommendation" value="2">2</label>
+            <label><input type="radio" name="recommendation" value="3">3</label>
+            <label><input type="radio" name="recommendation" value="4">4</label>
+            <label><input type="radio" name="recommendation" value="5">5</label>
+            <label><input type="radio" name="recommendation" value="6">6</label>
+            <label><input type="radio" name="recommendation" value="7">7</label>
+            <label><input type="radio" name="recommendation" value="8">8</label>
+            <label><input type="radio" name="recommendation" value="9">9</label>
+            <label><input type="radio" name="recommendation" value="10">10</label>
+            </p>
+        </fieldset><br><br>
+        <button type="submit">投稿する</button>
+    </form>
+    <a href="sample.html">
+        <button>トップページに戻る</button>
+    </a>
+    <script>
+    const occSelect = document.getElementById('occSelect');
+    const univForm = document.getElementById('univForm');
+    const gradForm = document.getElementById('gradForm');
+    
+    occSelect.addEventListener('change', function(){
+        const value = this.value;
+        univForm.classList.add('hidden');
+        gradForm.classList.add('hidden');
         
-        <h4><p>参加者国籍:</p>
-        <label><input type="radio" name="nationality" value="japanese_only">日本人のみ</label>
-        <label><input type="radio" name="nationality" value="japanese_local">日本人と現地人</label>
-        <label><input type="radio" name="nationality" value="multinational">多国籍</label>
-        </p></h4>
-        <h4><label>参加費: <input type="number" name="cost"></label>(例:100000)</p>
-        <h4><p><label>この団体を選んだ理由:</label>
-        <textarea name="reason2" rows="2" cols="50"></textarea>
-        </label></p>
-        
-        <h4><p>活動内容:</p></h4>
-        <p>＜交流＞</p>
-        <p>子どもとの交流:
-        <label><input type="radio" name="interactive_children" value="1">1</label>
-        <label><input type="radio" name="interactive_children" value="2">2</label>
-        <label><input type="radio" name="interactive_children" value="3">3</label>
-        <label><input type="radio" name="interactive_children" value="4">4</label>
-        <label><input type="radio" name="interactive_children" value="5">5</label>
-        </p>
-        <p>現地の人との交流:
-        <label><input type="radio" name="interactive_people" value="1">1</label>
-        <label><input type="radio" name="interactive_people" value="2">2</label>
-        <label><input type="radio" name="interactive_people" value="3">3</label>
-        <label><input type="radio" name="interactive_people" value="4">4</label>
-        <label><input type="radio" name="interactive_people" value="5">5</label>
-        </p>
-        <p>＜教育＞</p>
-        <p>言語支援:
-        <label><input type="radio" name="education_language" value="1">1</label>
-        <label><input type="radio" name="education_language" value="2">2</label>
-        <label><input type="radio" name="education_language" value="3">3</label>
-        <label><input type="radio" name="education_language" value="4">4</label>
-        <label><input type="radio" name="education_language" value="5">5</label>
-        </p>
-        <p>スポーツ支援:
-        <label><input type="radio" name="education_sports" value="1">1</label>
-        <label><input type="radio" name="education_sports" value="2">2</label>
-        <label><input type="radio" name="education_sports" value="3">3</label>
-        <label><input type="radio" name="education_sports" value="4">4</label>
-        <label><input type="radio" name="education_sports" value="5">5</label>
-        </p>
-        <p>音楽支援:
-        <label><input type="radio" name="education_music" value="1">1</label>
-        <label><input type="radio" name="education_music" value="2">2</label>
-        <label><input type="radio" name="education_music" value="3">3</label>
-        <label><input type="radio" name="education_music" value="4">4</label>
-        <label><input type="radio" name="education_music" value="5">5</label>
-        </p>
-        <p>＜医療・福祉＞</p>
-        <p>医療サポート:
-        <label><input type="radio" name="welfare_medical" value="1">1</label>
-        <label><input type="radio" name="welfare_medical" value="2">2</label>
-        <label><input type="radio" name="welfare_medical" value="3">3</label>
-        <label><input type="radio" name="welfare_medical" value="4">4</label>
-        <label><input type="radio" name="welfare_medical" value="5">5</label>
-        </p>
-        <p>高齢者サポート:
-        <label><input type="radio" name="welfare_elderly" value="1">1</label>
-        <label><input type="radio" name="welfare_elderly" value="2">2</label>
-        <label><input type="radio" name="welfare_elderly" value="3">3</label>
-        <label><input type="radio" name="welfare_elderly" value="4">4</label>
-        <label><input type="radio" name="welfare_elderly" value="5">5</label>
-        </p>
-        <p>障がい者サポート:
-        <label><input type="radio" name="welfare_disabilities" value="1">1</label>
-        <label><input type="radio" name="welfare_disabilities" value="2">2</label>
-        <label><input type="radio" name="welfare_disabilities" value="3">3</label>
-        <label><input type="radio" name="welfare_disabilities" value="4">4</label>
-        <label><input type="radio" name="welfare_disabilities" value="5">5</label>
-        </p>
-        <p>＜環境支援＞</p>
-        <p>植林活動、森林保護:
-        <label><input type="radio" name="environment_forest" value="1">1</label>
-        <label><input type="radio" name="environment_forest" value="2">2</label>
-        <label><input type="radio" name="environment_forest" value="3">3</label>
-        <label><input type="radio" name="environment_forest" value="4">4</label>
-        <label><input type="radio" name="environment_forest" value="5">5</label>
-        </p>
-        <p>動物保護:
-        <label><input type="radio" name="environment_animal" value="1">1</label>
-        <label><input type="radio" name="environment_animal" value="2">2</label>
-        <label><input type="radio" name="environment_animal" value="3">3</label>
-        <label><input type="radio" name="environment_animal" value="4">4</label>
-        <label><input type="radio" name="environment_animal" value="5">5</label>
-        </p>
-        <p>海洋保護:
-        <label><input type="radio" name="environment_sea" value="1">1</label>
-        <label><input type="radio" name="environment_sea" value="2">2</label>
-        <label><input type="radio" name="environment_sea" value="3">3</label>
-        <label><input type="radio" name="environment_sea" value="4">4</label>
-        <label><input type="radio" name="environment_sea" value="5">5</label>
-        </p>
-        <p>清掃:
-        <label><input type="radio" name="environment_clean" value="1">1</label>
-        <label><input type="radio" name="environment_clean" value="2">2</label>
-        <label><input type="radio" name="environment_clean" value="3">3</label>
-        <label><input type="radio" name="environment_clean" value="4">4</label>
-        <label><input type="radio" name="environment_clean" value="5">5</label>
-        </p>
-        <p>農業:
-        <label><input type="radio" name="environment_agricluture" value="1">1</label>
-        <label><input type="radio" name="environment_agricluture" value="2">2</label>
-        <label><input type="radio" name="environment_agricluture" value="3">3</label>
-        <label><input type="radio" name="environment_agricluture" value="4">4</label>
-        <label><input type="radio" name="environment_agricluture" value="5">5</label>
-        </p>
-        <p>＜貧困＞</p>
-        <p>食事配膳:
-        <label><input type="radio" name="poverty_food" value="1">1</label>
-        <label><input type="radio" name="poverty_food" value="2">2</label>
-        <label><input type="radio" name="poverty_food" value="3">3</label>
-        <label><input type="radio" name="poverty_food" value="4">4</label>
-        <label><input type="radio" name="poverty_food" value="5">5</label>
-        </p>
-        <p>＜文化＞</p>
-        <p>歴史地訪問:
-        <label><input type="radio" name="culture_history" value="1">1</label>
-        <label><input type="radio" name="culture_history" value="2">2</label>
-        <label><input type="radio" name="culture_history" value="3">3</label>
-        <label><input type="radio" name="culture_history" value="4">4</label>
-        <label><input type="radio" name="culture_history" value="5">5</label>
-        </p>
-        <p>文化体験:
-        <label><input type="radio" name="culture_experience" value="1">1</label>
-        <label><input type="radio" name="culture_experience" value="2">2</label>
-        <label><input type="radio" name="culture_experience" value="3">3</label>
-        <label><input type="radio" name="culture_experience" value="4">4</label>
-        <label><input type="radio" name="culture_experience" value="5">5</label> 
-        </p>
-        <p>イベント参加:
-        <label><input type="radio" name="culture_event" value="1">1</label>
-        <label><input type="radio" name="culture_event" value="2">2</label>
-        <label><input type="radio" name="culture_event" value="3">3</label>
-        <label><input type="radio" name="culture_event" value="4">4</label>
-        <label><input type="radio" name="culture_event" value="5">5</label> 
-        </p>
-        <p>町おこし:
-        <label><input type="radio" name="culture_town" value="1">1</label>
-        <label><input type="radio" name="culture_town" value="2">2</label>
-        <label><input type="radio" name="culture_town" value="3">3</label>
-        <label><input type="radio" name="culture_town" value="4">4</label>
-        <label><input type="radio" name="culture_town" value="5">5</label>
-        </p>
-        <p>＜災害・インフラ＞</p>
-        <p>復興:
-        <label><input type="radio" name="infra_reconstruction" value="1">1</label>
-        <label><input type="radio" name="infra_reconstruction" value="2">2</label>
-        <label><input type="radio" name="infra_reconstruction" value="3">3</label>
-        <label><input type="radio" name="infra_reconstruction" value="4">4</label>
-        <label><input type="radio" name="infra_reconstruction" value="5">5</label>
-        </p>
-        <p>井戸堀り、水道整備:
-        <label><input type="radio" name="infra_water" value="1">1</label>
-        <label><input type="radio" name="infra_water" value="2">2</label>
-        <label><input type="radio" name="infra_water" value="3">3</label>
-        <label><input type="radio" name="infra_water" value="4">4</label>
-        <label><input type="radio" name="infra_water" value="5">5</label>
-        </p>
-        <p>電気整備:
-        <label><input type="radio" name="infra_electricity" value="1">1</label>
-        <label><input type="radio" name="infra_electricity" value="2">2</label>
-        <label><input type="radio" name="infra_electricity" value="3">3</label>
-        <label><input type="radio" name="infra_electricity" value="4">4</label>
-        <label><input type="radio" name="infra_electricity" value="5">5</label>
-        </p>
-        <p>交通整備:
-        <label><input type="radio" name="infra_traffic" value="1">1</label>
-        <label><input type="radio" name="infra_traffic" value="2">2</label>
-        <label><input type="radio" name="infra_traffic" value="3">3</label>
-        <label><input type="radio" name="infra_traffic" value="4">4</label>
-        <label><input type="radio" name="infra_traffic" value="5">5</label>
-        </p>
-        <p>建設:
-        <label><input type="radio" name="infra_construction" value="1">1</label>
-        <label><input type="radio" name="infra_construction" value="2">2</label>
-        <label><input type="radio" name="infra_construction" value="3">3</label>
-        <label><input type="radio" name="infra_construction" value="4">4</label>
-        <label><input type="radio" name="infra_construction" value="5">5</label>
-        </p>
-        <h4><p>食事:</p></h4>
-        <p>現地らしさ:
-        <label><input type="radio" name="meal_local" value="1">1</label>
-        <label><input type="radio" name="meal_local" value="2">2</label>
-        <label><input type="radio" name="meal_local" value="3">3</label>
-        <label><input type="radio" name="meal_local" value="4">4</label>
-        <label><input type="radio" name="meal_local" value="5">5</label>
-        </p>
-        <p>日本人の口に合うか:
-        <label><input type="radio" name="meal_japanese" value="1">1</label>
-        <label><input type="radio" name="meal_japanese" value="2">2</label>
-        <label><input type="radio" name="meal_japanese" value="3">3</label>
-        <label><input type="radio" name="meal_japanese" value="4">4</label>
-        <label><input type="radio" name="meal_japanese" value="5">5</label>
-        </p>
-        <h4><p>宿泊施設:</p></h4>
-        <label><input type="checkbox" name="stay" value="hotel">ホテル</label>
-        <label><input type="checkbox" name="stay" value="dormitory">団体専用寮</label>
-        <label><input type="checkbox" name="stay" value="homestay">ホームステイ</label>
-        <h4><p>言語力</p></h4>
-        <p>現地語を話せる必要があるか:
-        <label><input type="radio" name="language_speak" value="1">1</label>
-        <label><input type="radio" name="language_speak" value="2">2</label>
-        <label><input type="radio" name="language_speak" value="3">3</label>
-        <label><input type="radio" name="language_speak" value="4">4</label>
-        <label><input type="radio" name="language_speak" value="5">5</label>
-        </p>
-        <p>日本語ガイドがいるか:
-        <label><input type="radio" name="language_guide" value="1">1</label>
-        <label><input type="radio" name="language_guide" value="2">2</label>
-        <label><input type="radio" name="language_guide" value="3">3</label>
-        <label><input type="radio" name="language_guide" value="4">4</label>
-        <label><input type="radio" name="language_guide" value="5">5</label>
-        </p>
-        <h4><p>その他</p></h4>
-        <p>参加後の個人的な関わり:
-        <label><input type="radio" name="private" value="1">1</label>
-        <label><input type="radio" name="private" value="2">2</label>
-        <label><input type="radio" name="private" value="3">3</label>
-        <label><input type="radio" name="private" value="4">4</label>
-        <label><input type="radio" name="private" value="5">5</label>
-        </p>
-        <p>参加後の団体としての関わり:
-        <label><input type="radio" name="official" value="1">1</label>
-        <label><input type="radio" name="official" value="2">2</label>
-        <label><input type="radio" name="official" value="3">3</label>
-        <label><input type="radio" name="official" value="4">4</label>
-        <label><input type="radio" name="official" value="5">5</label>
-        </p>
-        <p>自由度:
-        <label><input type="radio" name="freedom" value="1">1</label>
-        <label><input type="radio" name="freedom" value="2">2</label>
-        <label><input type="radio" name="freedom" value="3">3</label>
-        <label><input type="radio" name="freedom" value="4">4</label>
-        <label><input type="radio" name="freedom" value="5">5</label>
-        </p>
-        <p>航空券や入国などの援助:
-        <label><input type="radio" name="support" value="1">1</label>
-        <label><input type="radio" name="support" value="2">2</label>
-        <label><input type="radio" name="support" value="3">3</label>
-        <label><input type="radio" name="support" value="4">4</label>
-        <label><input type="radio" name="support" value="5">5</label>
-        </p>
-        <h4><p><label>おすすめポイント:</label>
-        <textarea name="appeal" rows="2" cols="50"></textarea>
-        </label></p></h4>
-        <h4><p><label>改善ポイント:</label>
-        <textarea name="improve" rows="2" cols="50"></textarea>
-        </label></p></h4>
-        <h4><p><label>感想:</label>
-        <textarea name="comment" rows="2" cols="50"></textarea>
-        </label></p></h4>
-        <h4><p>おすすめ度</p>
-        <label><input type="radio" name="recommendation" value="1">1</label>
-        <label><input type="radio" name="recommendation" value="2">2</label>
-        <label><input type="radio" name="recommendation" value="3">3</label>
-        <label><input type="radio" name="recommendation" value="4">4</label>
-        <label><input type="radio" name="recommendation" value="5">5</label>
-        <label><input type="radio" name="recommendation" value="6">6</label>
-        <label><input type="radio" name="recommendation" value="7">7</label>
-        <label><input type="radio" name="recommendation" value="8">8</label>
-        <label><input type="radio" name="recommendation" value="9">9</label>
-        <label><input type="radio" name="recommendation" value="10">10</label>
-        </p>
-    </fieldset><br><br>
-    <button type="submit">投稿する</button>
-</form>
-<script>
-const occSelect = document.getElementById('occSelect');
-const univForm = document.getElementById('univForm');
-const gradForm = document.getElementById('gradForm');
-
-occSelect.addEventListener('change', function(){
-    const value = this.value;
-    univForm.classList.add('hidden');
-    gradForm.classList.add('hidden');
-    
-    if(value === 'university'){
-        univForm.classList.remove('hidden');
-    } else if(value === 'graduate'){
-        gradForm.classList.remove('hidden');
-    }
-});
-
-const organizationInput = document.getElementById('organizationInput');
-const organizationSuggestions = document.getElementById('organizationSuggestions');
-let allOrganizations = [];
-
-// ページ読み込み時にすべての団体名を取得
-async function fetchAllOrganizations() {
-    try {
-        const response = await fetch('/organizations');
-        allOrganizations = await response.json();
-    } catch (error) {
-        console.error('Error fetching organizations:', error);
-    }
-}
-
-// 入力時にサジェストを表示
-organizationInput.addEventListener('input', () => {
-    const query = organizationInput.value.toLowerCase();
-    organizationSuggestions.innerHTML = '';
-    if (query.length === 0) {
-        organizationSuggestions.style.display = 'none';
-        return;
-    }
-
-    const filtered = allOrganizations.filter(org => org.toLowerCase().includes(query));
-    
-    if (filtered.length > 0) {
-        filtered.forEach(org => {
-            const div = document.createElement('div');
-            div.textContent = org;
-            div.style.padding = '8px';
-            div.style.cursor = 'pointer';
-            div.addEventListener('click', () => {
-                organizationInput.value = org;
-                organizationSuggestions.style.display = 'none';
-            });
-            organizationSuggestions.appendChild(div);
-        });
-        organizationSuggestions.style.display = 'block';
-    } else {
-        organizationSuggestions.style.display = 'none';
-    }
-});
-
-// フォーム外をクリックしたらサジェストを非表示に
-document.addEventListener('click', (e) => {
-    if (!organizationInput.contains(e.target) && !organizationSuggestions.contains(e.target)) {
-        organizationSuggestions.style.display = 'none';
-    }
-});
-
-const form = document.getElementById('reviewForm');
-form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    const formData = new FormData(form);
-    const data = {};
-
-    for (const [key, value] of formData.entries()) {
-        data[key] = value;
-    }
-
-    data.reason = formData.getAll('reason');
-    data.stay = formData.getAll('stay');
-
-    data.ratings = {};
-    const ratingKeys = ['interactive_children', 'interactive_people', 'education_language', 'education_sports', 'education_music', 'welfare_medical', 'welfare_elderly', 'welfare_disabilities', 'environment_forest', 'environment_animal', 'environment_sea', 'environment_clean', 'environment_agricluture', 'poverty_food', 'culture_history', 'culture_experience', 'culture_event', 'culture_town', 'infra_reconstruction', 'infra_water', 'infra_electricity', 'infra_traffic', 'infra_construction', 'meal_local', 'meal_japanese', 'language_speak', 'language_guide', 'private', 'official', 'freedom', 'support'];
-    
-    ratingKeys.forEach(key => {
-        data.ratings[key] = formData.get(key) || '未回答';
-    });
-
-    data.age = data.age ? parseInt(data.age) : null;
-    data.people = data.people ? parseInt(data.people) : null;
-    data.cost = data.cost ? parseInt(data.cost) : null;
-    data.recommendation = data.recommendation ? parseInt(data.recommendation) : null;
-    
-    try {
-        const response = await fetch('/reviews', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        });
-
-        if (response.ok) {
-            alert('口コミを送信しました！');
-            form.reset();
-            window.location.href = 'list.html';
-        } else {
-            const errorData = await response.json();
-            console.error('Server error:', errorData);
-            alert('口コミの送信に失敗しました。詳細はコンソールを確認してください。');
+        if(value === 'university'){
+            univForm.classList.remove('hidden');
+        } else if(value === 'graduate'){
+            gradForm.classList.remove('hidden');
         }
-    } catch (error) {
-        console.error('Network error:', error);
-        alert('エラーが発生しました。ネットワーク接続を確認してください。');
+    });
+    
+    const organizationInput = document.getElementById('organizationInput');
+    const organizationSuggestions = document.getElementById('organizationSuggestions');
+    let allOrganizations = [];
+    
+    // ページ読み込み時にすべての団体名を取得
+    async function fetchAllOrganizations() {
+        try {
+            const response = await fetch('/organizations');
+            allOrganizations = await response.json();
+        } catch (error) {
+            console.error('Error fetching organizations:', error);
+        }
     }
-});
-
-fetchAllOrganizations();
-</script>
+    
+    // 入力時にサジェストを表示
+    organizationInput.addEventListener('input', () => {
+        const query = organizationInput.value.toLowerCase();
+        organizationSuggestions.innerHTML = '';
+        if (query.length === 0) {
+            organizationSuggestions.style.display = 'none';
+            return;
+        }
+    
+        const filtered = allOrganizations.filter(org => org.toLowerCase().includes(query));
+        
+        if (filtered.length > 0) {
+            filtered.forEach(org => {
+                const div = document.createElement('div');
+                div.textContent = org;
+                div.style.padding = '8px';
+                div.style.cursor = 'pointer';
+                div.addEventListener('click', () => {
+                    organizationInput.value = org;
+                    organizationSuggestions.style.display = 'none';
+                });
+                organizationSuggestions.appendChild(div);
+            });
+            organizationSuggestions.style.display = 'block';
+        } else {
+            organizationSuggestions.style.display = 'none';
+        }
+    });
+    
+    // フォーム外をクリックしたらサジェストを非表示に
+    document.addEventListener('click', (e) => {
+        if (!organizationInput.contains(e.target) && !organizationSuggestions.contains(e.target)) {
+            organizationSuggestions.style.display = 'none';
+        }
+    });
+    
+    const form = document.getElementById('reviewForm');
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+    
+        const formData = new FormData(form);
+        const data = {};
+    
+        for (const [key, value] of formData.entries()) {
+            data[key] = value;
+        }
+    
+        data.reason = formData.getAll('reason');
+        data.stay = formData.getAll('stay');
+    
+        data.ratings = {};
+        const ratingKeys = ['interactive_children', 'interactive_people', 'education_language', 'education_sports', 'education_music', 'welfare_medical', 'welfare_elderly', 'welfare_disabilities', 'environment_forest', 'environment_animal', 'environment_sea', 'environment_clean', 'environment_agricluture', 'poverty_food', 'culture_history', 'culture_experience', 'culture_event', 'culture_town', 'infra_reconstruction', 'infra_water', 'infra_electricity', 'infra_traffic', 'infra_construction', 'meal_local', 'meal_japanese', 'language_speak', 'language_guide', 'private', 'official', 'freedom', 'support'];
+        
+        ratingKeys.forEach(key => {
+            data.ratings[key] = formData.get(key) || '未回答';
+        });
+    
+        data.age = data.age ? parseInt(data.age) : null;
+        data.people = data.people ? parseInt(data.people) : null;
+        data.cost = data.cost ? parseInt(data.cost) : null;
+        data.recommendation = data.recommendation ? parseInt(data.recommendation) : null;
+        
+        try {
+            const response = await fetch('/reviews', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+    
+            if (response.ok) {
+                alert('口コミを送信しました！');
+                form.reset();
+                window.location.href = 'list.html';
+            } else {
+                const errorData = await response.json();
+                console.error('Server error:', errorData);
+                alert('口コミの送信に失敗しました。詳細はコンソールを確認してください。');
+            }
+        } catch (error) {
+            console.error('Network error:', error);
+            alert('エラーが発生しました。ネットワーク接続を確認してください。');
+        }
+    });
+    
+    fetchAllOrganizations();
+    </script>
 </body>    
 </html>
