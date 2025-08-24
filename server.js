@@ -13,6 +13,15 @@ const PORT = process.env.PORT || 3000;
 app.use(bodyParser.json());
 app.use(cors());
 
+// robots.txtへのリクエストを明示的に処理する
+app.get('/robots.txt', (req, res) => {
+    res.type('text/plain');
+    res.send('User-agent: *\nDisallow:\nSitemap: https://reviews-app-a56v.onrender.com/sitemap.xml');
+});
+
+// 静的ファイルを配信する既存のミドルウェア
+app.use(express.static(path.join(__dirname, 'public')));
+
 // 'public'ディレクトリを静的配信
 app.use(express.static(path.join(__dirname, 'public')));
 
