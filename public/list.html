@@ -4,6 +4,37 @@
   <meta charset="UTF-8">
   <title>口コミ一覧</title>
   <meta name="google-site-verification" content="I-6pXdZ-8O-kBGU7J5imtft81pLgAJFzc2GvGoYzVC0" />
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        padding: 20px;
+        background-color: #f4f4f4;
+    }
+    .review-container {
+        background: #fff;
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .helpful-button {
+        background-color: #0077cc;
+        color: white;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+    .helpful-button:hover {
+        background-color: #005a9c;
+    }
+    .helpful-count {
+        margin-left: 10px;
+        font-weight: bold;
+    }
+    </style>
 </head>
 <body>
   <h1>口コミ一覧</h1>
@@ -131,8 +162,19 @@
         
         const deleteButton = isAdmin ? `<button onclick="deleteReview('${r._id}')">削除</button>` : '';
 
-        return `<p>
-          <hr>
+        // 役立ったボタンとカウンターを追加
+        const helpfulSection = `
+            <div style="margin-top: 15px;">
+                <button class="helpful-button" onclick="addHelpful('${r._id}')">
+                    役に立った
+                </button>
+                <span class="helpful-count" id="helpful-count-${r._id}">
+                    ${r.helpfulCount || 0}
+                </span>
+            </div>
+        `;
+
+        return `<div class="review-container">
           <b>参加者情報</b>
           <ul>
             <li>職業: ${r.occ || '未記入'}</li>
@@ -174,8 +216,9 @@
             <li>感想: ${r.comment || '未記入'}</li>
             <li>おすすめ度: ${r.recommendation || '未記入'} / 10</li>
           </ul>
+          ${helpfulSection}
           ${deleteButton}
-        </p>`;
+        </div>`;
       }).join('');
     }
 
@@ -195,6 +238,24 @@
         } catch (error) {
             console.error('Error:', error);
             alert('削除中にエラーが発生しました。');
+        }
+    }
+
+    // 役立ったボタンのクリック処理を追加
+    async function addHelpful(id) {
+        try {
+            const res = await fetch(`/reviews/helpful/${id}`, { method: 'POST' });
+            if (res.ok) {
+                // UIを即座に更新
+                const countElement = document.getElementById(`helpful-count-${id}`);
+                const currentCount = parseInt(countElement.textContent);
+                countElement.textContent = currentCount + 1;
+            } else {
+                alert('カウントに失敗しました。');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('操作中にエラーが発生しました。');
         }
     }
 
