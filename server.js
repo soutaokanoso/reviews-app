@@ -7,20 +7,15 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-
+// robots.txtを動的に生成するエンドポイント
+app.get('/robots.txt', (req, res) => {
+  res.type('text/plain');
+  res.send('User-agent: *\nDisallow:\nSitemap: https://reviews-app-a56v.onrender.com/sitemap.xml');
+});
 
 // ミドルウェア
 app.use(bodyParser.json());
 app.use(cors());
-
-// robots.txtへのリクエストを明示的に処理する
-app.get('/robots.txt', (req, res) => {
-    res.type('text/plain');
-    res.send('User-agent: *\nDisallow:\nSitemap: https://reviews-app-a56v.onrender.com/sitemap.xml');
-});
-
-// 静的ファイルを配信する既存のミドルウェア
-app.use(express.static(path.join(__dirname, 'public')));
 
 // 'public'ディレクトリを静的配信
 app.use(express.static(path.join(__dirname, 'public')));
@@ -86,7 +81,6 @@ const reviewSchema = new mongoose.Schema({
   improve: String,
   comment: String,
   recommendation: String,
-  helpfulCount: { type: Number, default: 0 }, // 役立ったカウントのフィールドを追加
   createdAt: { type: Date, default: Date.now }
 });
 
@@ -150,25 +144,6 @@ app.delete('/reviews/:id', async (req, res) => {
     res.status(200).json({ message: 'Review deleted successfully' });
   } catch (err) {
     res.status(500).json({ message: 'Error deleting review', error: err.message });
-  }
-});
-
-// POST 役立ったボタンのクリックを処理
-app.post('/reviews/helpful/:id', async (req, res) => {
-  try {
-    const updatedReview = await Review.findByIdAndUpdate(
-      req.params.id,
-      { $inc: { helpfulCount: 1 } },
-      { new: true } // 更新後のドキュメントを返す
-    );
-
-    if (!updatedReview) {
-      return res.status(404).json({ message: 'Review not found' });
-    }
-
-    res.status(200).json({ message: 'Helpful count updated successfully', helpfulCount: updatedReview.helpfulCount });
-  } catch (err) {
-    res.status(500).json({ message: 'Error updating helpful count', error: err.message });
   }
 });
 
