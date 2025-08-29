@@ -1,3 +1,4 @@
+// server.js
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -5,21 +6,12 @@ const cors = require('cors');
 const path = require('path');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
-
-
+const PORT = 3000;
 
 // ミドルウェア
 app.use(bodyParser.json());
 app.use(cors());
-
-// 'public'ディレクトリを静的配信
-app.use(express.static(path.join(__dirname, 'public')));
-
-// robots.txtを静的ファイルとして配信
-app.get('/robots.txt', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'robots.txt'));
-});
+app.use(express.static(path.join(__dirname, 'public'))); // public フォルダを静的配信
 
 // MongoDB Atlas に接続
 mongoose.connect(
@@ -41,7 +33,6 @@ const reviewSchema = new mongoose.Schema({
   country: String,
   people: String,
   genderRatio: String,
-  nationality: String,
   cost: String,
   reason2: String,
   ratings: {
@@ -82,7 +73,6 @@ const reviewSchema = new mongoose.Schema({
   improve: String,
   comment: String,
   recommendation: String,
-  helpfulCount: { type: Number, default: 0 }, // 役立ったカウントのフィールドを追加
   createdAt: { type: Date, default: Date.now }
 });
 
@@ -98,32 +88,6 @@ app.get('/reviews', async (req, res) => {
   }
 });
 
-// GET すべての団体名を取得
-app.get('/organizations', async (req, res) => {
-  try {
-    const organizations = await Review.distinct('organization');
-    res.json(organizations);
-  } catch (err) {
-    res.status(500).json({ message: 'Error retrieving organizations', error: err.message });
-  }
-});
-
-// GET 団体名で検索
-app.get('/search', async (req, res) => {
-  const query = req.query.organization;
-  if (!query) {
-    return res.status(400).json({ message: 'Organization query is required' });
-  }
-
-  try {
-    // 正規表現を使ってあいまい検索
-    const reviews = await Review.find({ organization: { $regex: query, $options: 'i' } });
-    res.json(reviews);
-  } catch (err) {
-    res.status(500).json({ message: 'Error searching reviews', error: err.message });
-  }
-});
-
 // POST 口コミ追加
 app.post('/reviews', async (req, res) => {
   try {
@@ -135,8 +99,6 @@ app.post('/reviews', async (req, res) => {
     res.status(400).json({ message: 'Invalid data submitted', error: err.message });
   }
 });
-
-// DELETE 口コミ削除
 app.delete('/reviews/:id', async (req, res) => {
   try {
     const deletedReview = await Review.findByIdAndDelete(req.params.id);
@@ -148,25 +110,5 @@ app.delete('/reviews/:id', async (req, res) => {
     res.status(500).json({ message: 'Error deleting review', error: err.message });
   }
 });
-
-// POST 役立ったボタンのクリックを処理
-app.post('/reviews/helpful/:id', async (req, res) => {
-  try {
-    const updatedReview = await Review.findByIdAndUpdate(
-      req.params.id,
-      { $inc: { helpfulCount: 1 } },
-      { new: true } // 更新後のドキュメントを返す
-    );
-
-    if (!updatedReview) {
-      return res.status(404).json({ message: 'Review not found' });
-    }
-
-    res.status(200).json({ message: 'Helpful count updated successfully', helpfulCount: updatedReview.helpfulCount });
-  } catch (err) {
-    res.status(500).json({ message: 'Error updating helpful count', error: err.message });
-  }
-});
-
 // サーバー起動
 app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
