@@ -1,4 +1,3 @@
-// server.js
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -6,12 +5,20 @@ const cors = require('cors');
 const path = require('path');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
+
+// robots.txtを動的に生成するエンドポイント
+app.get('/robots.txt', (req, res) => {
+  res.type('text/plain');
+  res.send('User-agent: *\nDisallow:\nSitemap: https://reviews-app-a56v.onrender.com/sitemap.xml');
+});
 
 // ミドルウェア
 app.use(bodyParser.json());
 app.use(cors());
-app.use(express.static(path.join(__dirname, 'public'))); // public フォルダを静的配信
+
+// 'public'ディレクトリを静的配信
+app.use(express.static(path.join(__dirname, 'public')));
 
 // MongoDB Atlas に接続
 mongoose.connect(
@@ -33,6 +40,7 @@ const reviewSchema = new mongoose.Schema({
   country: String,
   people: String,
   genderRatio: String,
+  nationality: String,
   cost: String,
   reason2: String,
   ratings: {
@@ -88,6 +96,32 @@ app.get('/reviews', async (req, res) => {
   }
 });
 
+// GET すべての団体名を取得
+app.get('/organizations', async (req, res) => {
+  try {
+    const organizations = await Review.distinct('organization');
+    res.json(organizations);
+  } catch (err) {
+    res.status(500).json({ message: 'Error retrieving organizations', error: err.message });
+  }
+});
+
+// GET 団体名で検索
+app.get('/search', async (req, res) => {
+  const query = req.query.organization;
+  if (!query) {
+    return res.status(400).json({ message: 'Organization query is required' });
+  }
+
+  try {
+    // 正規表現を使ってあいまい検索
+    const reviews = await Review.find({ organization: { $regex: query, $options: 'i' } });
+    res.json(reviews);
+  } catch (err) {
+    res.status(500).json({ message: 'Error searching reviews', error: err.message });
+  }
+});
+
 // POST 口コミ追加
 app.post('/reviews', async (req, res) => {
   try {
@@ -99,6 +133,8 @@ app.post('/reviews', async (req, res) => {
     res.status(400).json({ message: 'Invalid data submitted', error: err.message });
   }
 });
+
+// DELETE 口コミ削除
 app.delete('/reviews/:id', async (req, res) => {
   try {
     const deletedReview = await Review.findByIdAndDelete(req.params.id);
@@ -110,5 +146,6 @@ app.delete('/reviews/:id', async (req, res) => {
     res.status(500).json({ message: 'Error deleting review', error: err.message });
   }
 });
+
 // サーバー起動
 app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
