@@ -141,5 +141,41 @@ app.delete('/reviews/:id', async (req, res) => {
   }
 });
 
+// robots.txt を返す
+app.get('/robots.txt', (req, res) => {
+  res.type('text/plain');
+  res.send(
+    `User-agent: *
+Allow: /
+Sitemap: https://reviews-app-a56v.onrender.com/sitemap.xml`
+  );
+});
+
+// sitemap.xml を返す
+app.get('/sitemap.xml', (req, res) => {
+  res.type('application/xml');
+  res.send(`<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://reviews-app-a56v.onrender.com/sample.html</loc>
+    <lastmod>2025-08-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://reviews-app-a56v.onrender.com/write_review.html</loc>
+    <lastmod>2025-08-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://reviews-app-a56v.onrender.com/list.html</loc>
+    <lastmod>2025-08-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+</urlset>`);
+});
+
 // サーバー起動
 app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
