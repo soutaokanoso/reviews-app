@@ -335,6 +335,10 @@
             <label><input type="radio" name="infra_construction" value="4">4</label>
             <label><input type="radio" name="infra_construction" value="5">5</label>
             </p>
+
+            <h4><p><label>活動内容の詳細（記述式）:</label>
+            <textarea name="activity_details" rows="5" cols="50"></textarea>
+            </label></p></h4>
             <h4><p>食事:</p></h4>
             <p>現地らしさ:
             <label><input type="radio" name="meal_local" value="1">1</label>
@@ -502,6 +506,9 @@
         for (const [key, value] of formData.entries()) {
             data[key] = value;
         }
+        
+        // 新しい項目を追加
+        data.activity_details = formData.get('activity_details');
     
         data.reason = formData.getAll('reason');
         data.stay = formData.getAll('stay');

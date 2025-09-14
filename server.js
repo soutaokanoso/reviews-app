@@ -75,6 +75,8 @@ const reviewSchema = new mongoose.Schema({
   improve: String,
   comment: String,
   recommendation: String,
+  // ここに新しい項目を追加
+  activity_details: String,
   createdAt: { type: Date, default: Date.now }
 });
 
@@ -173,6 +175,12 @@ app.get('/sitemap.xml', (req, res) => {
     <lastmod>2025-08-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://reviews-app-a56v.onrender.com/matching.html</loc>
+    <lastmod>2025-09-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
 </urlset>`);
 });
