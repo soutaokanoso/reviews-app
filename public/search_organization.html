@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>団体を探す</title>
-    <meta name="google-site-verification" content="I-6pXdZ-8O-kBGU7J5imtft81pLgAJFzc2GvGoYzVC0" />
+    <meta name="description" content="海外ボランティア団体を検索するページ。団体名で口コミを絞り込み、リアルな体験談を探せます。">
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -72,13 +72,24 @@
             margin-top: 20px;
             margin-bottom: 20px;
         }
+        .faq-section {
+            margin-top: 50px;
+            text-align: left;
+        }
+        .faq-section h3 {
+            color: #005a9c;
+        }
+        .faq-section p {
+            font-size: 1em;
+            color: #555;
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
     <h2>海外ボランティア団体を探す</h2>
-    <p>団体名を入力してください</p>
+    <p>団体名を入力して、その団体の口コミを検索できます。過去に投稿された口コミを参考に、団体について詳しく知りましょう。</p>
     <div style="position: relative; display: inline-block; width: 100%;">
         <input type="text" id="searchInput" placeholder="例: ジャパンハート, 日本赤十字...">
         <div id="suggestions"></div>
@@ -87,6 +98,14 @@
     
     <div id="searchResults">
         </div>
+
+    <div class="faq-section">
+        <h3>よくある質問</h3>
+        <h4>Q. 検索しても団体が見つからない場合は？</h4>
+        <p>A. まだその団体に関する口コミが投稿されていない可能性があります。その場合は、ぜひあなたの体験談を投稿して、最初の口コミを投稿してみませんか？</p>
+        <h4>Q. 団体名が正確にわからない場合は？</h4>
+        <p>A. 部分的なキーワードでも検索できます。例えば「ジャパン」と入力すると、「NPO法人ジャパンハート」などがサジェスト表示されます。</p>
+    </div>
 </div>
 
 <script>
