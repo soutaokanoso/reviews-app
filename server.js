@@ -77,6 +77,8 @@ const reviewSchema = new mongoose.Schema({
   recommendation: String,
   // ここに新しい項目を追加
   activity_details: String,
+  // いいねの数を保存する新しいフィールドを追加
+  helpfulCount: { type: Number, default: 0 },
   createdAt: { type: Date, default: Date.now }
 });
 
@@ -142,6 +144,29 @@ app.delete('/reviews/:id', async (req, res) => {
     res.status(500).json({ message: 'Error deleting review', error: err.message });
   }
 });
+
+// 新しいエンドポイント: いいねの数を増やす
+app.post('/reviews/helpful/:id', async (req, res) => {
+  try {
+    const reviewId = req.params.id;
+    // $inc演算子を使ってhelpfulCountを1増やす
+    const updatedReview = await Review.findByIdAndUpdate(
+      reviewId,
+      { $inc: { helpfulCount: 1 } },
+      { new: true } // 更新後のドキュメントを返す
+    );
+
+    if (!updatedReview) {
+      return res.status(404).json({ message: 'Review not found' });
+    }
+
+    res.status(200).json({ message: 'Helpful count updated successfully' });
+  } catch (err) {
+    console.error('Error updating helpful count:', err);
+    res.status(500).json({ message: 'Error updating helpful count', error: err.message });
+  }
+});
+
 
 // robots.txt を返す
 app.get('/robots.txt', (req, res) => {
